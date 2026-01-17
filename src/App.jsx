@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+
+const messages = ["Learn React ⚛️", "Apply for jobs 💼", "Get hired 🎉"];
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [step, setStep] = useState(0);
+  const [showMessage, setShowMessage] = useState(true);
+
+  function handlePreviousStep() {
+    setStep((s) => (s <= 0 ? step : s - 1));
+  }
+
+  function handleNextStep() {
+    setStep((s) => (s >= messages.length - 1 ? step : s + 1));
+  }
+
+  function handleClose() {
+    setShowMessage((show) => !show);
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <button className="close" onClick={handleClose}>
+        &times;
+      </button>
+
+      {showMessage && (
+        <div className="steps">
+          <div className="numbers">
+            {messages.map((_, index) => (
+              <div key={index} className={step >= index ? "active" : ""}>
+                {index + 1}
+              </div>
+            ))}
+          </div>
+          <p className="message">
+            Step {step + 1} of {messages.length}: {messages[step]}
+          </p>
+          <div className="buttons">
+            <button onClick={handlePreviousStep}>Previous</button>
+            <button onClick={handleNextStep}>Next</button>
+          </div>
+        </div>
+      )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
